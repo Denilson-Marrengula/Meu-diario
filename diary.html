@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Diário</title>
+  <style>
+    body {
+      font-family: Tahoma;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4a90e2, #357ab8);
+      color: #fff;
+      padding: 25px;
+      text-align: center;
+      position: relative;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-welcome {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    #botaoSair {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #botaoSair:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    #botaoSair:active {
+      transform: translateY(0);
+    }
+
+    .icone-sair {
+      font-size: 1.1rem;
+    }
+
+    footer {
+      background: #e0e0e0;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: auto;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    main {
+      display: flex;
+      gap: 25px;
+      padding: 25px;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+    }
+
+    .formulario-entrada,
+    .container-entradas {
+      background: #fff;
+      padding: 25px;
+      border-radius: 20px;
+      flex: 1;
+      min-width: 300px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease;
+       
+    }
+
+    .formulario-entrada:hover,
+    .container-entradas:hover {
+      transform: translateY(-5px);
+    }
+
+    .formulario-entrada h2,
+    .container-entradas h2 {
+      color: #4a90e2;
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 10px;
+    }
+
+    input,
+    textarea,
+    button {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 12px 15px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #4a90e2;
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    button {
+      background: #4a90e2;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:hover {
+      background: #357ab8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .entrada {
+      padding: 20px;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 15px;
+      border-radius: 15px;
+      background: #fafafa;
+      transition: all 0.3s ease;
+    }
+
+    .entrada:hover {
+      background: #f0f7ff;
+      transform: translateX(5px);
+    }
+
+    .titulo-entrada {
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .data-entrada {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .conteudo-entrada {
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .acoes-entrada {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .botao-editar {
+      background: #f39c12;
+      flex: 1;
+    }
+
+    .botao-editar:hover {
+      background: #e08e0b;
+    }
+
+    .botao-excluir {
+      background: #e74c3c;
+      flex: 1;
+    }
+
+    .botao-excluir:hover {
+      background: #d62c1a;
+    }
+
+    .nenhuma-entrada {
+      text-align: center;
+      color: #888;
+      padding: 30px;
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .user-info {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      #botaoSair {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      main {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="header-content">
+      <h1>📔 Meu Diário</h1>
+      <div class="user-info">
+        <div class="user-welcome">Olá, <span id="exibirUsuario">Usuário</span>!</div>
+        <button id="botaoSair">
+          <span class="icone-sair">🚪</span>
+          Sair
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="formulario-entrada">
+      <h2>✏️ Nova Entrada</h2>
+      <input type="text" id="tituloEntrada" placeholder="Título da entrada">
+      <textarea id="conteudoEntrada" placeholder="Conteúdo da entrada..."></textarea>
+      <button id="botaoSalvar">
+        <span>💾</span>
+        Salvar Entrada
+      </button>
+    </section>
+
+    <section class="container-entradas">
+      <h2>📚 Minhas Entradas</h2>
+      <div id="listaEntradas">
+        <div class="nenhuma-entrada">Nenhuma entrada ainda. Comece escrevendo sua primeira entrada!</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Denilson Marrengula. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    
+
+    let usuarioAtual = localStorage.getItem('usuarioAtual');
+    if (!usuarioAtual) {
+      window.location.href = 'login.html';
+    }
+
+    
+    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    let usuario = usuarios.find(u => u.nomeUsuario === usuarioAtual);
+    if (!usuario) {
+      window.location.href = 'login.html';
+    }
+
+   
+    const tituloEntrada = document.getElementById('tituloEntrada');
+    const conteudoEntrada = document.getElementById('conteudoEntrada');
+    const botaoSalvar = document.getElementById('botaoSalvar');
+    const listaEntradas = document.getElementById('listaEntradas');
+    const botaoSair = document.getElementById('botaoSair');
+    const exibirUsuario = document.getElementById('exibirUsuario');
+
+    
+    exibirUsuario.textContent = usuario.nomeUsuario || 'Usuário';
+
+    
+    function mostrarEntradas() {
+      listaEntradas.innerHTML = '';
+      
+      if (!usuario.entradas || usuario.entradas.length === 0) {
+        listaEntradas.innerHTML = '<div class="nenhuma-entrada">Nenhuma entrada ainda. Comece escrevendo sua primeira entrada!</div>';
+        return;
+      }
+      
+      
+      const entradasOrdenadas = [...usuario.entradas].sort((a, b) => new Date(b.data) - new Date(a.data));
+      
+      entradasOrdenadas.forEach((entrada, indice) => {
+        const indiceOriginal = usuario.entradas.indexOf(entrada);
+        const div = document.createElement('div');
+        div.className = 'entrada';
+        div.innerHTML = `
+            <div class="titulo-entrada">${entrada.titulo}</div>
+            <div class="data-entrada">${new Date(entrada.data).toLocaleString('pt-BR')}</div>
+            <div class="conteudo-entrada">${entrada.conteudo}</div>
+            <div class="acoes-entrada">
+                <button class="botao-editar" data-indice="${indiceOriginal}">
+                  <span>✏️</span>
+                  Editar
+                </button>
+                <button class="botao-excluir" data-indice="${indiceOriginal}">
+                  <span>🗑</span>
+                  Excluir
+                </button>
+            </div>
+        `;
+        listaEntradas.appendChild(div);
+      });
+
+      
+      document.querySelectorAll('.botao-editar').forEach(botao => {
+        botao.onclick = () => {
+          const indice = parseInt(botao.getAttribute('data-indice'));
+          tituloEntrada.value = usuario.entradas[indice].titulo;
+          conteudoEntrada.value = usuario.entradas[indice].conteudo;
+          
+          
+          botaoSalvar.onclick = () => {
+            if (!tituloEntrada.value.trim() || !conteudoEntrada.value.trim()) {
+              alert('Por favor, preencha todos os campos');
+              return;
+            }
+            
+            usuario.entradas[indice].titulo = tituloEntrada.value;
+            usuario.entradas[indice].conteudo = conteudoEntrada.value;
+            usuario.entradas[indice].data = new Date();
+            salvarUsuarios();
+            
+           
+            tituloEntrada.value = '';
+            conteudoEntrada.value = '';
+            botaoSalvar.onclick = adicionarEntrada;
+            botaoSalvar.innerHTML = '<span>💾</span> Salvar Entrada';
+            
+            mostrarEntradas();
+          };
+          
+         
+          botaoSalvar.innerHTML = '<span>💾</span> Atualizar Entrada';
+        };
+      });
+
+      
+      document.querySelectorAll('.botao-excluir').forEach(botao => {
+        botao.onclick = () => {
+          const indice = parseInt(botao.getAttribute('data-indice'));
+          if (confirm('Tem certeza que deseja excluir esta entrada?')) {
+            usuario.entradas.splice(indice, 1);
+            salvarUsuarios();
+            mostrarEntradas();
+          }
+        };
+      });
+    }
+
+    
+    function adicionarEntrada() {
+      if (!tituloEntrada.value.trim() || !conteudoEntrada.value.trim()) {
+        alert('Por favor, preencha todos os campos');
+        return;
+      }
+      
+      if (!usuario.entradas) {
+        usuario.entradas = [];
+      }
+      
+      usuario.entradas.push({
+        titulo: tituloEntrada.value,
+        conteudo: conteudoEntrada.value,
+        data: new Date()
+      });
+      
+      salvarUsuarios();
+      tituloEntrada.value = '';
+      conteudoEntrada.value = '';
+      mostrarEntradas();
+    }
+
+    
+    function salvarUsuarios() {
+      const indice = usuarios.findIndex(u => u.nomeUsuario === usuarioAtual);
+      if (indice !== -1) {
+        usuarios[indice] = usuario;
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+      }
+    }
+
+    
+    botaoSalvar.onclick = adicionarEntrada;
+    
+    botaoSair.onclick = () => {
+      if (confirm('Tem certeza que deseja sair?')) {
+        localStorage.removeItem('usuarioAtual');
+        window.location.href = 'login.html';
+      }
+    };
+
+    mostrarEntradas();
+  </script>
+
+</body>
+
+</html>

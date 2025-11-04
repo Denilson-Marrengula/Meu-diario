@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Diário</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4a90e2, #357ab8);
+      color: #fff;
+      padding: 30px;
+      text-align: center;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      width: 350px;
+      text-align: center;
+      margin: 40px auto;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4a90e2;
+      color: #fff;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background: #357ab8;
+    }
+
+    .links {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+
+    .link {
+      color: #4a90e2;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .separador {
+      color: #ccc;
+      margin: 0 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>📔 Meu Diário</h1>
+  </header>
+
+  <div class="container">
+    <h2>Login</h2>
+    <input type="text" id="campoUsuario" placeholder="Usuário">
+    <input type="password" id="campoSenha" placeholder="Senha">
+    <button id="botaoLogin">Entrar</button>
+    
+    <div class="links">
+      <a class="link" onclick="window.location.href='register.html'">Não tem conta? Cadastre-se</a>
+      <a class="link" href="index.html">Home</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('botaoLogin').onclick = () => {
+      const usuario = document.getElementById('campoUsuario').value.trim();
+      const senha = document.getElementById('campoSenha').value;
+      if (!usuario || !senha) { alert('Preencha todos os campos'); return; }
+      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+      const usuarioEncontrado = usuarios.find(u => u.nomeUsuario === usuario && u.senha === senha);
+      if (!usuarioEncontrado) { alert('Usuário ou senha incorretos'); return; }
+      localStorage.setItem('usuarioAtual', usuario);
+      window.location.href = 'diary.html';
+    };
+  </script>
+
+</body>
+
+</html>
