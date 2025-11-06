@@ -107,21 +107,26 @@
       flex: 1;
     }
 
-    .formulario-entrada,
-    .container-entradas {
+    .formulario-entrada {
+      flex: 2;
+      min-width: 300px;
+      max-width: 400px;
       background: #fff;
       padding: 25px;
       border-radius: 20px;
-      flex: 1;
-      min-width: 300px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      transition: transform 0.3s ease;
-       
+      transition: all 0.3s ease;
+      border: 3px solid transparent;
     }
 
-    .formulario-entrada:hover,
-    .container-entradas:hover {
-      transform: translateY(-5px);
+    .container-entradas {
+      flex: 2;
+      background: #fff;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      min-height: 400px;
+
     }
 
     .formulario-entrada h2,
@@ -206,12 +211,15 @@
       font-size: 0.85rem;
       color: #888;
       margin-bottom: 10px;
+      border-bottom: 1px dashed #eee;
+      padding-bottom: 5px;
     }
 
     .conteudo-entrada {
       color: #555;
       line-height: 1.5;
       margin-bottom: 15px;
+      white-space: pre-wrap;
     }
 
     .acoes-entrada {
@@ -223,6 +231,7 @@
     .botao-editar {
       background: #f39c12;
       flex: 1;
+      
     }
 
     .botao-editar:hover {
@@ -243,27 +252,6 @@
       color: #888;
       padding: 30px;
       font-style: italic;
-    }
-
-    @media (max-width: 768px) {
-      .header-content {
-        flex-direction: column;
-        gap: 15px;
-      }
-      
-      .user-info {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      #botaoSair {
-        width: 100%;
-        justify-content: center;
-      }
-      
-      main {
-        padding: 15px;
-      }
     }
   </style>
 </head>
@@ -307,21 +295,21 @@
   </footer>
 
   <script>
-    
+
 
     let usuarioAtual = localStorage.getItem('usuarioAtual');
     if (!usuarioAtual) {
       window.location.href = 'login.html';
     }
 
-    
+
     let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
     let usuario = usuarios.find(u => u.nomeUsuario === usuarioAtual);
     if (!usuario) {
       window.location.href = 'login.html';
     }
 
-   
+
     const tituloEntrada = document.getElementById('tituloEntrada');
     const conteudoEntrada = document.getElementById('conteudoEntrada');
     const botaoSalvar = document.getElementById('botaoSalvar');
@@ -329,21 +317,21 @@
     const botaoSair = document.getElementById('botaoSair');
     const exibirUsuario = document.getElementById('exibirUsuario');
 
-    
+
     exibirUsuario.textContent = usuario.nomeUsuario || 'Usuário';
 
-    
+
     function mostrarEntradas() {
       listaEntradas.innerHTML = '';
-      
+
       if (!usuario.entradas || usuario.entradas.length === 0) {
         listaEntradas.innerHTML = '<div class="nenhuma-entrada">Nenhuma entrada ainda. Comece escrevendo sua primeira entrada!</div>';
         return;
       }
-      
-      
+
+
       const entradasOrdenadas = [...usuario.entradas].sort((a, b) => new Date(b.data) - new Date(a.data));
-      
+
       entradasOrdenadas.forEach((entrada, indice) => {
         const indiceOriginal = usuario.entradas.indexOf(entrada);
         const div = document.createElement('div');
@@ -366,40 +354,40 @@
         listaEntradas.appendChild(div);
       });
 
-      
+
       document.querySelectorAll('.botao-editar').forEach(botao => {
         botao.onclick = () => {
           const indice = parseInt(botao.getAttribute('data-indice'));
           tituloEntrada.value = usuario.entradas[indice].titulo;
           conteudoEntrada.value = usuario.entradas[indice].conteudo;
-          
-          
+
+
           botaoSalvar.onclick = () => {
             if (!tituloEntrada.value.trim() || !conteudoEntrada.value.trim()) {
               alert('Por favor, preencha todos os campos');
               return;
             }
-            
+
             usuario.entradas[indice].titulo = tituloEntrada.value;
             usuario.entradas[indice].conteudo = conteudoEntrada.value;
             usuario.entradas[indice].data = new Date();
             salvarUsuarios();
-            
-           
+
+
             tituloEntrada.value = '';
             conteudoEntrada.value = '';
             botaoSalvar.onclick = adicionarEntrada;
             botaoSalvar.innerHTML = '<span>💾</span> Salvar Entrada';
-            
+
             mostrarEntradas();
           };
-          
-         
+
+
           botaoSalvar.innerHTML = '<span>💾</span> Atualizar Entrada';
         };
       });
 
-      
+
       document.querySelectorAll('.botao-excluir').forEach(botao => {
         botao.onclick = () => {
           const indice = parseInt(botao.getAttribute('data-indice'));
@@ -412,30 +400,30 @@
       });
     }
 
-    
+
     function adicionarEntrada() {
       if (!tituloEntrada.value.trim() || !conteudoEntrada.value.trim()) {
         alert('Por favor, preencha todos os campos');
         return;
       }
-      
+
       if (!usuario.entradas) {
         usuario.entradas = [];
       }
-      
+
       usuario.entradas.push({
         titulo: tituloEntrada.value,
         conteudo: conteudoEntrada.value,
         data: new Date()
       });
-      
+
       salvarUsuarios();
       tituloEntrada.value = '';
       conteudoEntrada.value = '';
       mostrarEntradas();
     }
 
-    
+
     function salvarUsuarios() {
       const indice = usuarios.findIndex(u => u.nomeUsuario === usuarioAtual);
       if (indice !== -1) {
@@ -444,9 +432,9 @@
       }
     }
 
-    
+
     botaoSalvar.onclick = adicionarEntrada;
-    
+
     botaoSair.onclick = () => {
       if (confirm('Tem certeza que deseja sair?')) {
         localStorage.removeItem('usuarioAtual');

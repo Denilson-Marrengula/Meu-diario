@@ -48,10 +48,19 @@
       color: #333;
     }
 
+    .input-label {
+      display: block;
+      text-align: left;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
     input {
       width: 100%;
       padding: 12px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       border: 1px solid #ccc;
       border-radius: 10px;
       font-size: 1rem;
@@ -107,27 +116,49 @@
 
   <div class="container">
     <h2>Login</h2>
-    <input type="text" id="campoUsuario" placeholder="Usuário">
-    <input type="password" id="campoSenha" placeholder="Senha">
-    <button id="botaoLogin">Entrar</button>
-    
+
+    <form id="formLogin">
+      <label for="campoUsuario" class="input-label">Usuário:</label>
+      <input type="text" id="campoUsuario" name="usuario" placeholder="Seu nome de usuário ou e-mail" required>
+
+      <label for="campoSenha" class="input-label">Senha:</label>
+      <input type="password" id="campoSenha" name="senha" placeholder="Sua senha" required
+        autocomplete="current-password">
+
+      <button type="submit">Entrar</button>
+    </form>
+
+    <p id="mensagemErro" class="mensagem-erro" style="color: red; margin-top: 10px; display: none; font-size: 0.9rem;">
+      Usuário ou senha incorretos.
+    </p>
+
     <div class="links">
-      <a class="link" onclick="window.location.href='register.html'">Não tem conta? Cadastre-se</a>
+      <a class="link" href="register.html">Não tem conta? Cadastre-se</a>
       <a class="link" href="index.html">Home</a>
     </div>
   </div>
 
   <script>
-    document.getElementById('botaoLogin').onclick = () => {
+    document.getElementById('formLogin').addEventListener('submit', function (event) {
+      event.preventDefault();
+
       const usuario = document.getElementById('campoUsuario').value.trim();
       const senha = document.getElementById('campoSenha').value;
-      if (!usuario || !senha) { alert('Preencha todos os campos'); return; }
+      const mensagemErro = document.getElementById('mensagemErro');
+
+      mensagemErro.style.display = 'none';
+
       const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
       const usuarioEncontrado = usuarios.find(u => u.nomeUsuario === usuario && u.senha === senha);
-      if (!usuarioEncontrado) { alert('Usuário ou senha incorretos'); return; }
+
+      if (!usuarioEncontrado) {
+        mensagemErro.style.display = 'block';
+        return;
+      }
+
       localStorage.setItem('usuarioAtual', usuario);
       window.location.href = 'diary.html';
-    };
+    });
   </script>
 
 </body>
